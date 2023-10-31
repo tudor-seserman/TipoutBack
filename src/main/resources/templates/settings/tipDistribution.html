@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body class="container">
+
+<nav th:replace="fragments :: navigation"></nav>
+
+<div class="alert alert-success" role="alert" th:if="${success}">
+    Employee Tip Rates Edited Successfully
+</div>
+
+<form method="post" th:object="${employeeTipRates}">
+    <div class="form-group" th:each="type : ${employeeTypes}" >
+        <label th:text="${type}"></label>
+        <input type="number"
+               th:field="*{__${type}__Rate}"
+               class="form-control"/>
+        <p class="alert alert-warning" th:errors="*{__${type}__Rate}"></p>
+    </div>
+    <br>
+    <div class="form-group">
+        <input type="submit" value="Update Tipout Distribution" class="btn btn-warning">
+    </div>
+</form>
+<br>
+
+</body>
+</html>

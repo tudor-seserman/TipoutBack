@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body class="container">
+
+<nav th:replace="fragments :: navigation"></nav>
+
+
+    <div class="alert alert-success" role="alert" th:if="${success}">
+        Employee Edit Successful
+    </div>
+    <div class="alert alert-success" role="alert" th:if="${archive}">
+        Employee Archived Successfully
+    </div>
+
+<div>
+    <form method="post" th:action="@{/employees/edit/{employeeToEditId}(employeeToEditId=${employeeToEditId})}">
+        <div class="form-group">
+            <label>First Name
+                <input name="firstName" th:value="${employeeToEdit.firstName}" class="form-control"/>
+            </label>
+            <p class="error" th:errors="${employeeToEdit.firstName}"></p>
+        </div>
+        <div class="form-group">
+            <label>Last Name
+                <input name="lastName" th:value="${employeeToEdit.lastName}" class="form-control"/>
+            </label>
+            <p class="error" th:errors="${employeeToEdit.lastName}"></p>
+        </div>
+<!--        <div class="form-group">-->
+<!--            <label>What is their role?-->
+<!--                <select  name="role" class="form-control">-->
+<!--                    <option th:each="position : ${employer.employees}"-->
+<!--                    th:value="${position.getClass().getSimpleName()}"-->
+<!--                    th:text="${position.getClass().getSimpleName()}"-->
+<!--                    ></option>-->
+<!--                </select>-->
+<!--            </label>-->
+<!--        </div>-->
+        <br>
+        <div class="form-group">
+            <input type="hidden" th:value="${false}" name="archive">
+            <input type="submit" th:value="'Edit '+${employeeToEdit}" class="btn btn-warning">
+        </div>
+    </form>
+    <br>
+    <br>
+    <br>
+    <form method="post" th:action="@{/employees/edit/{employeeToEditId}(employeeToEditId=${employeeToEditId})}">
+        <div class="form-group">
+            <input type="hidden" th:value="${true}" name="archive">
+            <input type="submit" th:value="'Archive '+${employeeToEdit}" class="btn btn-danger">
+        </div>
+    </form>
+</div>
+
+    <form method="post" th:action="@{/employees/delete/{employeeToDeleteId}(employeeToDeleteId=${employeeToEditId})}">
+        <div class="form-group">
+            <input type="hidden" th:value="${false}" name="confirmation">
+            <input type="submit" th:value="'Delete '+${employeeToEdit}" class="btn btn-danger">
+        </div>
+    </form>
+
+</body>
+</html>

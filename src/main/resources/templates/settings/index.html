@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body class="container">
+
+<nav th:replace="fragments :: navigation"></nav>
+
+
+<div class="card w-50">
+    <div class="card-body">
+        <h5 class="card-title">Tip Distribution</h5>
+        <p class="card-text">Customize how tips are distributed by roles</p>
+        <a class="btn btn-primary" href="settings/tipDistribution">Customize</a>
+    </div>
+</div>
+
+<br>
+
+<div class="card w-50">
+    <div class="card-body">
+        <h5 class="card-title">Access Employee Archive</h5>
+        <p class="card-text">Activate employees that have been archived</p>
+        <a class="btn btn-primary" href="settings/archive">Employee Archive</a>
+    </div>
+</div>
+<br>
+</body>
+</html>

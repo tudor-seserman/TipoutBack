@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body class="container">
+
+<nav th:replace="fragments :: navigation"></nav>
+
+<h2 th:text="${'Total tip pool $'+tippool}"></h2>
+
+<table class="table table-striped">
+    <thead>Tip Distribution</thead>
+    <tr>
+        <th>Employee</th>
+        <th>Money Owed</th>
+    </tr>
+    <tr th:each="employeeTippedOut : ${payouts}">
+        <td th:text="${employeeTippedOut.key.getFirstName()}+' '+${employeeTippedOut.key.getLastName()}"></td>
+        <td th:text="${employeeTippedOut.value.getDisplayTips()}"></td>
+    </tr>
+
+</table>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body class="container">
+
+<nav th:replace="fragments :: navigation" ></nav>
+
+<!--Form to calculate tips.
+Split between those that collect tips and those that are added to the pool
+For those that collect tips adding a non-null value will include them in the tip pool
+For those that not collect dips, selecting their names will enter a default value of zero as their dips
+collected therefore adding them to the tip pool.
+
+I itemStat.index to iterate through an empty hashmap from the TipsCollected class. Because I
+divide the two kinds of employees, I add the list size from the part to the iterator in the second part,
+this is not as clean of a solution as I would like it to be.
+If Employees are included in the tip pool they have a none null Tips attached to them
+
+The form sends TipsCollected object to /calculate/report for further processing
+-->
+
+<div class="alert alert-danger" role="alert" th:if="${error}" th:text="${error}">
+</div>
+
+<form method="POST" action="/calculate/report"
+        th:if="${collectTips.moneyHandlerTipsMap.size()>0}"
+      >
+        <div>
+            <label>
+                <h3>Enter Tips</h3>
+                <div th:each="moneyHandler : ${moneyHandlers}">
+                    <label th:text="${moneyHandler}"></label>
+                    <input type="number"
+                           th:field="${collectTips.moneyHandlerTipsMap[__${moneyHandler.id}__].tips}"
+                           class="form-control">
+                </div>
+            </label>
+        </div>
+
+    <br>
+        <div th:if="${collectTips.nonMoneyHandlerTipsMap.size()>0}">
+            <label>
+                <h3 >Add other employees to the Tippool</h3>
+                <div th:each="nonMoneyHandler, itemStat : ${nonMoneyHandlers}">
+                    <input type="checkbox"
+                           value="0"
+                           th:field="${collectTips.nonMoneyHandlerTipsMap[__${nonMoneyHandler.id}__].tips}"
+                        />
+                    <label th:text="${nonMoneyHandler}"></label>
+                    <br>
+                </div>
+            </label>
+        </div>
+        <div>
+            <br>
+            <input type="submit" value="Calculate Tips" class="btn btn-success">
+        </div>
+    </form>
+    <!--Won't be able to see form if no employees have been added-->
+    <h2 th:if="${collectTips.moneyHandlerTipsMap.size()<1}">Add Employees That Collect Tips to Get Started</h2>
+<br>
+<br>
+</body>
+</html>
+

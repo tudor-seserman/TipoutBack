@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body class="container">
+
+
+<div th:if="${!loggedin}">
+    <h1  th:replace="fragments :: title"></h1>
+    <p>Have an account? <a href="/login">Login</a></p>
+    <p>Don't have an account? <a href="/register">Register for one.</a></p>
+</div>
+
+
+<div th:if="${loggedin}">
+    <nav th:replace="fragments :: navigation"></nav>
+</div>
+
+<h3 class="text-center d-inline-flex p-2">An app to calculate end of shift distribution of tips collected and distributed by a restaurant employer.</h3>
+
+
+
+</body>
+</html>

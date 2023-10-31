@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body class="container">
+
+<nav th:replace="fragments :: navigation"></nav>
+
+<div>
+    <p  class="alert alert-success" th:if="${newEmployee != null}" th:text="${newEmployee+' added successfully!'}"></p>
+    <p  class="alert alert-danger" th:if="${error != null}" th:text="${error}"></p>
+    <form method="post">
+        <div class="form-group">
+            <label>First Name
+                <input th:field="${createEmployeeDTO.firstName}" class="form-control"/>
+            </label>
+            <p class="error" th:errors="${createEmployeeDTO.firstName}"></p>
+        </div>
+        <div class="form-group">
+            <label>Last Name
+                <input th:field="${createEmployeeDTO.lastName}" class="form-control"/>
+            </label>
+            <p class="error" th:errors="${createEmployeeDTO.lastName}"></p>
+        </div>
+        <div class="form-group">
+            <label>What is their role?
+
+                <select  name="role" class="form-control" th:field="${createEmployeeDTO.employeeRole}">
+                    <option
+                            th:each=" role : ${employeeTypes}"
+                            th:value="${role}"
+                            th:text="${role}"
+                    ></option>
+                </select>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Add Employee" class="btn btn-success">
+        </div>
+    </form>
+
+
+</div>
+
+</body>
+</html>

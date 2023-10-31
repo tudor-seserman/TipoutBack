@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body class="container">
+
+<nav th:replace="fragments :: navigation"></nav>
+
+<br>
+<div class="jumbotron">
+        <h3 th:text="'Are you sure you want to permanently delete '+${employeeToDelete}+' from your system?'"></h3>
+        <p class="mb-0">This will remove the employee from past tip reports leaving for incomplete records.
+            We recommend archiving employees that are no longer active.
+        </p>
+        <br>
+</div>
+    <form method="post" th:action="@{/employees/delete/{employeeToDeleteId}(employeeToDeleteId=${employeeToDeletedId})}">
+        <div class="form-group">
+            <div class="form-group">
+                <input type="hidden" th:value="${true}" name="archive">
+                <input type="submit" th:value="'Archive '+${employeeToDelete}" class="btn btn-warning">
+            </div>
+            <a href="/employees/current" class="btn btn-primary" role="button">Go Back</a>
+            <br>
+            <br>
+            <br>
+            <input type="hidden" th:value="${true}" name="confirmation">
+            <input type="submit" th:value="'Delete '+${employeeToDelete}" class="btn btn-danger">
+        </div>
+    </form>
+
+<br>
+</body>
+</html>
