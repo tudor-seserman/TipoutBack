@@ -3,12 +3,14 @@ package com.tipout.Tipout.controllers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tipout.Tipout.models.DTOs.CreateEmployeeDTO;
+import com.tipout.Tipout.models.DTOs.DeleteEmployeeDTO;
 import com.tipout.Tipout.models.Employee;
 import com.tipout.Tipout.models.Employees.*;
 import com.tipout.Tipout.models.Employer;
 import com.tipout.Tipout.models.UserEntity;
 import com.tipout.Tipout.models.data.*;
 import com.tipout.Tipout.service.AuthenticatedUser;
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -181,10 +183,26 @@ public class EmployeeController {
     @GetMapping("current")
     public ResponseEntity<List<String>> allEmployee(){
         Employer employer = (Employer)authenticatedUser.getUser();
-        List<Employee> employees = employeeRepository.findCurrentEmployees(employer.getId());
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();;
+//        List<Employee> employees = employeeRepository.findCurrentEmployees(employer.getId());
+        Optional<List<Employee>> optionalEmployees = employeeRepository.findByEmployerAndDeletedFalse(employer);
+        if (optionalEmployees.isEmpty()) {
+//            Placeholder until I can implement @ControllerAdvice
+            return ResponseEntity.ok(List.of("Not Found"));
+        }
+        List<Employee> employees = optionalEmployees.get();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         List<String> JSONemplpyees= employees.stream().map(gson::toJson).collect(Collectors.toList());
         return ResponseEntity.ok(JSONemplpyees);
+    }
+
+    @PostMapping("delete")
+    public HttpStatus deleteEmployeeProcessing(@RequestBody DeleteEmployeeDTO employeeToDelete){
+        Optional<Employee> optionalEmployee = employeeRepository.findById(employeeToDelete.employeeToDelete());
+        if(optionalEmployee.isEmpty()){return HttpStatus.NOT_FOUND;}
+        Employee employee = optionalEmployee.get();
+        employee.setDeleted(!employee.isDeleted());
+        employeeRepository.save(employee);
+        return HttpStatus.OK;
     }
 
 //    @GetMapping("current")

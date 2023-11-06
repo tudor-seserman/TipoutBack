@@ -1,6 +1,7 @@
 package com.tipout.Tipout.models.data;
 
 import com.tipout.Tipout.models.Employee;
+import com.tipout.Tipout.models.Employer;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -8,6 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -33,6 +35,8 @@ public interface EmployeeRepository extends CrudRepository<Employee,Long>{
 //    Find all current active Employees that have the same Employer
     @Query(value="SELECT *, 0 AS clazz_ FROM tipout.EMPLOYEE Where deleted = false AND employer_id = ?1", nativeQuery = true)
     List<Employee> findCurrentEmployees(long id);
+    @Query
+    Optional<List<Employee>> findByEmployerAndDeletedFalse(Employer employer);
 
 //    Find all archived Employees that have the same Employer
     @Query(value="SELECT *, 0 AS clazz_ FROM tipout.EMPLOYEE Where deleted = true AND employer_id = ?1", nativeQuery = true)
