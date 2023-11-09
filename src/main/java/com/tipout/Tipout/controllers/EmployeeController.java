@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tipout.Tipout.models.DTOs.CreateEmployeeDTO;
 import com.tipout.Tipout.models.DTOs.DeleteEmployeeDTO;
+import com.tipout.Tipout.models.DTOs.EditEmployeeDTO;
 import com.tipout.Tipout.models.Employee;
 import com.tipout.Tipout.models.Employees.*;
 import com.tipout.Tipout.models.Employer;
@@ -193,6 +194,20 @@ public class EmployeeController {
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         List<String> JSONemplpyees= employees.stream().map(gson::toJson).collect(Collectors.toList());
         return ResponseEntity.ok(JSONemplpyees);
+    }
+
+    @PostMapping("edit")
+    public ResponseEntity editEmployee(@RequestBody EditEmployeeDTO employee){
+        System.out.println(employee);
+
+        Optional<Employee> optEmployeeToEdit = employeeRepository.findById(employee.idEdit());
+        if(optEmployeeToEdit.isEmpty()){return new ResponseEntity<>(HttpStatus.NOT_FOUND);}
+        Employee employeeToEdit = optEmployeeToEdit.get();
+        employeeToEdit.setFirstName(employee.firstName());
+        employeeToEdit.setLastName(employee.lastName());
+        employeeRepository.save(employeeToEdit);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("delete")
