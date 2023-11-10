@@ -1,6 +1,7 @@
 package com.tipout.Tipout.models;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

@@ -1,5 +1,6 @@
 package com.tipout.Tipout.models;
 
+import com.tipout.Tipout.models.DTOs.TipRatesDTO;
 import com.tipout.Tipout.models.Employees.BOH;
 import com.tipout.Tipout.models.Employees.Bartender;
 import com.tipout.Tipout.models.Employees.Busser;
@@ -9,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.*;
 import java.math.BigInteger;
+import java.util.List;
+
 /*
 Employee tip rates tied to Employer
 Fields in this class should follow the naming convention [capital case role]Rate
@@ -91,5 +94,9 @@ public class EmployeeTipRates extends AbstractEntity{
 //            throw some error message
             return null;
         }
+    }
+
+    public List<TipRatesDTO> getAllEmployerTipRates(){
+        return List.of(new TipRatesDTO("Bartender", this.BartenderRate),new TipRatesDTO("BOH", this.BOHRate), new TipRatesDTO("Busser", this.BusserRate), new TipRatesDTO("Server", this.ServerRate));
     }
 }
