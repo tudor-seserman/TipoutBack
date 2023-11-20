@@ -96,6 +96,51 @@ public class EmployeeTipRates extends AbstractEntity{
         }
     }
 
+    public BigInteger getTipoutByRoleName(String roleName){
+        if(roleName.equals("Bartender")) {
+            return this.BartenderRate;
+        } else if (roleName.equals("BOH")) {
+            return this.BOHRate;
+        } else if (roleName.equals("Server")) {
+            return this.ServerRate;
+        } else if (roleName.equals("Busser")) {
+            return this.BusserRate;
+        }else{
+//            throw some error message
+            throw new Error();
+        }
+    }
+
+    public EmployeeTipRates editTipRates(List<TipRatesDTO> ratesToEdit){
+        for(TipRatesDTO rateDTO : ratesToEdit){
+            try{
+            BigInteger currentTipRate = this.getTipoutByRoleName(rateDTO.roleName());
+            BigInteger submittedTipRate = rateDTO.tipRate();
+            if(currentTipRate != submittedTipRate){
+                this.editTipRateByRole(rateDTO);
+            }
+        }catch(Error e){
+            throw new RuntimeException("Role not found!");}
+        }
+
+        return this;
+    }
+
+    public void editTipRateByRole(TipRatesDTO tipRateDTOToEdit){
+        if(tipRateDTOToEdit.roleName().equals("Bartender")) {
+            this.setBartenderRate(tipRateDTOToEdit.tipRate());
+        } else if (tipRateDTOToEdit.roleName().equals("BOH")) {
+            this.setBOHRate(tipRateDTOToEdit.tipRate());
+        } else if (tipRateDTOToEdit.roleName().equals("Server")) {
+            this.setServerRate(tipRateDTOToEdit.tipRate());
+        } else if (tipRateDTOToEdit.roleName().equals("Busser")) {
+            this.setBusserRate(tipRateDTOToEdit.tipRate());
+        }else{
+//            throw some error message
+            throw new Error();
+        }
+    }
+
     public List<TipRatesDTO> getAllEmployerTipRates(){
         return List.of(new TipRatesDTO("Bartender", this.BartenderRate),new TipRatesDTO("BOH", this.BOHRate), new TipRatesDTO("Busser", this.BusserRate), new TipRatesDTO("Server", this.ServerRate));
     }

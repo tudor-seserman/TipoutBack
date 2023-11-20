@@ -1,33 +1,33 @@
 package com.tipout.Tipout.controllers;
 
-//import com.tipout.Tipout.models.Employee;
-//import com.tipout.Tipout.models.EmployeeTipRates;
-//import com.tipout.Tipout.models.Employer;
-//import com.tipout.Tipout.models.data.EmployeeRepository;
-//import com.tipout.Tipout.models.data.EmployerRepository;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.validation.Errors;
-//import org.springframework.web.bind.annotation.*;
-//
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpSession;
-//import javax.validation.Valid;
-//import java.util.Optional;
-///*
-//THis controller allows for the Employer to customize settings for their use
-// */
-//@Controller
-//@RequestMapping(value="settings")
-//public class SettingsController {
-//
-//    @Autowired
-//    AuthenticationController authenticationController;
-//    @Autowired
-//    EmployeeRepository employeeRepository;
-//    @Autowired
-//    EmployerRepository employerRepository;
+import com.tipout.Tipout.models.Employee;
+import com.tipout.Tipout.models.EmployeeTipRates;
+import com.tipout.Tipout.models.Employer;
+import com.tipout.Tipout.models.data.EmployeeRepository;
+import com.tipout.Tipout.models.data.EmployerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.util.Optional;
+/*
+THis controller allows for the Employer to customize settings for their use
+ */
+@Controller
+@RequestMapping(value="settings")
+public class SettingsController {
+
+    @Autowired
+    AuthenticationController authenticationController;
+    @Autowired
+    EmployeeRepository employeeRepository;
+    @Autowired
+    EmployerRepository employerRepository;
 ////Landing page with the option to select the settings they would like to adjust
 //    @GetMapping
 //    public String returnIndex(Model model){
@@ -119,4 +119,4 @@ package com.tipout.Tipout.controllers;
 //        return "settings/tipDistribution";
 //    }
 //
-//}
+}
