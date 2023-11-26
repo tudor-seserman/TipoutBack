@@ -42,7 +42,7 @@ the the size of the tippool.
 3. Individual tipouts are calculated by multiplying the number of shares an employee has of the tip pool by the value of each of those shares.
 4. This information is pushed to the tipPoolDistribution Map.
  */
-    public Map<String, String> calculateTippoolDistribution(Integer totalTippoolRates, BigDecimal totalTippool, List<Employee> employeesInTippool){
+    public Map<String, String> calculateWeightedTippoolByRole(Integer totalTippoolRates, BigDecimal totalTippool, List<Employee> employeesInTippool){
 
 //        This method receives three pieces of information from the TipoutController, total tips, total rates in tip pool, employees that need to be tipped out
 
@@ -54,6 +54,24 @@ the the size of the tippool.
         for(Employee employeeInTippool: employeesInTippool){
             BigDecimal portionOfTippool = shareOfTippool.multiply(new BigDecimal(employeeInTippool.getPercentOfTipout()));
             Tips tip = new Tips(portionOfTippool);
+            tipPoolDistribution.put(employeeInTippool, tip);
+            displayMap.put(employeeInTippool.toString(), tip.getDisplayTips());
+        }
+        return displayMap;
+    }
+
+    public Map<String, String> calculateEvenTippool(BigDecimal totalTippool, List<Employee> employeesInTippool){
+
+//        This method receives three pieces of information from the TipoutController, total tips, total rates in tip pool, employees that need to be tipped out
+
+//        We divide the total money by all the rates of the employees in the tip pool
+//        shareOfTippool is the monatery value of each employee share of the tippool
+        BigDecimal shareOfTippool = totalTippool.divide(BigDecimal.valueOf(employeesInTippool.size()), 4, RoundingMode.HALF_UP);
+        System.out.println(shareOfTippool);
+
+
+        for(Employee employeeInTippool: employeesInTippool){
+            Tips tip = new Tips(shareOfTippool);
             tipPoolDistribution.put(employeeInTippool, tip);
             displayMap.put(employeeInTippool.toString(), tip.getDisplayTips());
         }
