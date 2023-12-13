@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -18,7 +19,7 @@ One of two user classes. Employers handle Employee enrollment and setting Tipout
 
 @Entity
 @Data
-@EqualsAndHashCode(callSuper=false)
+@NoArgsConstructor
 @JsonIdentityInfo(generator= ObjectIdGenerators.UUIDGenerator.class, property="@id")
 public class Employer extends UserEntity implements Serializable {
 
@@ -44,6 +45,6 @@ public class Employer extends UserEntity implements Serializable {
                 new EmployeeRole(this,"Bartender", BigInteger.valueOf(40),true),
                 new EmployeeRole(this,"Server", BigInteger.valueOf(40),true),
                 new EmployeeRole(this,"BOH", BigInteger.valueOf(5),false),
-                new EmployeeRole(this,"Busser", BigInteger.valueOf(115),false));
+                new EmployeeRole(this,"Busser", BigInteger.valueOf(15),false));
     }
 }

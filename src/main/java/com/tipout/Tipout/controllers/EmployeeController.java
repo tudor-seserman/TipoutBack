@@ -55,11 +55,12 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity createEmployee(@RequestBody CreateEmployeeDTO employee){
             Employer employer = (Employer) authenticatedUser.getUser();
-            Optional<EmployeeRole> employeeRoleOptional = employeeRoleRepository.findByName(employee.getEmployeeRole());
+            Optional<EmployeeRole> employeeRoleOptional = employeeRoleRepository.findByNameAndEmployer_id(employee.getEmployeeRole(), employer.getId());
             if (employeeRoleOptional.isEmpty()){new ResponseEntity<>(HttpStatus.BAD_REQUEST);};
             EmployeeRole employeeRole = employeeRoleOptional.get();
 
             Employee newEmployee = new Employee(employee.getFirstName(), employee.getLastName(), employer, employeeRole);
+            employeeRepository.save(newEmployee);
 
             return new ResponseEntity<>(HttpStatus.OK);
     }

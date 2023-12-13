@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.google.gson.annotations.Expose;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -18,6 +19,7 @@ different roles will inherit from this class.
  */
 @Entity
 @Data
+@NoArgsConstructor
 //@Inheritance(strategy = InheritanceType.JOINED)
 @JsonIdentityInfo(generator= ObjectIdGenerators.UUIDGenerator.class, property="@id")
 public class Employee implements Serializable {
@@ -39,22 +41,29 @@ public class Employee implements Serializable {
     @ManyToOne
     private Employer employer;
 
-//Quick way to get role name
-//    @Expose
-//    private String roleDetail = this.getClass().getSimpleName();
     @Expose
     @OneToMany
-    private List<EmployeeRole> employeeRole = new ArrayList<>();
+    private List<EmployeeRole> employeeRoles = new ArrayList<>();
 
     //Field is used to filter out archived employees from active Employees
     @Expose
     private boolean deleted = Boolean.FALSE;
 
-    public Employee(String firstName, String lastName, Employer employer, EmployeeRole employeeRole) {
+    public Employee(String firstName, String lastName, Employer employer, EmployeeRole employeeRoles) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.employer = employer;
-        this.employeeRole.add(employeeRole);
+        this.employeeRoles.add(employeeRoles);
+    }
+
+    public void deleteRole(EmployeeRole employeeRole){
+        if(employeeRoles.contains(employeeRole)){
+            employeeRoles.remove(employeeRole);}
+    }
+
+    public void addRole(EmployeeRole employeeRole){
+        if(!employeeRoles.contains(employeeRole)){
+            employeeRoles.add(employeeRole);}
     }
 
     @Override

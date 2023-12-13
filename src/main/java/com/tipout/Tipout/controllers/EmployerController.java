@@ -61,7 +61,7 @@ public class EmployerController {
         Employer employer = (Employer)authenticatedUser.getUser();
         List<EmployeeRole> employeeRoleTipRatesToEdit = new ArrayList<>();
         for (TipRatesDTO tipRateToEdit : ratesToEdit){
-            Optional<EmployeeRole> employeeRoleOptional = employeeRoleRepository.findByName(tipRateToEdit.roleName());
+            Optional<EmployeeRole> employeeRoleOptional = employeeRoleRepository.findByNameAndEmployer_id(tipRateToEdit.roleName(), employer.getId());
             EmployeeRole employeeRole = employeeRoleOptional.get();
             employeeRole.setRate(tipRateToEdit.tipRate());
             employeeRoleTipRatesToEdit.add(employeeRole);
