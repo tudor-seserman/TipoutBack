@@ -1,20 +1,11 @@
 package com.tipout.Tipout.controllers;
 
-import com.tipout.Tipout.models.Employee;
-import com.tipout.Tipout.models.EmployeeTipRates;
-import com.tipout.Tipout.models.Employer;
 import com.tipout.Tipout.models.data.EmployeeRepository;
 import com.tipout.Tipout.models.data.EmployerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-import java.util.Optional;
 /*
 THis controller allows for the Employer to customize settings for their use
  */
@@ -76,7 +67,7 @@ public class SettingsController {
 //        HttpSession session = request.getSession();
 //        Employer employer = authenticationController.getEmployerFromSession(session);
 //
-//        EmployeeTipRates employeeTipRates = employer.getTipRates();
+//        EmployeeRole employeeTipRates = employer.getTipRates();
 //        model.addAttribute("title", "Tip Distribution");
 //        model.addAttribute("employeeTypes", employer.getEmployeesTypes());
 //        model.addAttribute("employeeTipRates", employeeTipRates);
@@ -85,7 +76,7 @@ public class SettingsController {
 //
 //    @PostMapping("tipDistribution")
 //    public String processTipDistributionForm(Model model,
-//                                             @ModelAttribute @Valid EmployeeTipRates employeeTipRates,
+//                                             @ModelAttribute @Valid EmployeeRole employeeTipRates,
 //                                             Errors errors,
 //                                             HttpServletRequest request) {
 //        HttpSession session = request.getSession();
@@ -111,7 +102,7 @@ public class SettingsController {
 //        }
 //
 //
-//        EmployeeTipRates newEmployeeTipRates = employer.getTipRates();
+//        EmployeeRole newEmployeeTipRates = employer.getTipRates();
 //        model.addAttribute("title", "Tip Distribution");
 //        model.addAttribute("success", "success");
 //        model.addAttribute("employeeTypes", employer.getEmployeesTypes());

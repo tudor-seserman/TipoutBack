@@ -1,10 +1,8 @@
 package com.tipout.Tipout.controllers;
 
-import com.tipout.Tipout.models.DTOs.CollectTipsEmployeeDTO;
 import com.tipout.Tipout.models.DTOs.TipRatesDTO;
 import com.tipout.Tipout.models.Employee;
-import com.tipout.Tipout.models.EmployeeTipRates;
-import com.tipout.Tipout.models.Employees.MoneyHandler;
+import com.tipout.Tipout.models.EmployeeRole;
 import com.tipout.Tipout.models.Employer;
 import com.tipout.Tipout.models.data.*;
 import com.tipout.Tipout.service.AuthenticatedUser;
@@ -13,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -49,18 +46,18 @@ public class EmployerController {
     @PostMapping("editRates")
     public HttpStatus editEmployerTipRates(@RequestBody List<TipRatesDTO> ratesToEdit){
         Employer employer = (Employer)authenticatedUser.getUser();
-        EmployeeTipRates editedEmployeeTipRates = employer.getTipRates().editTipRates(ratesToEdit);
+        EmployeeRole editedRoleType = employer.getTipRates().editTipRates(ratesToEdit);
 
         //         Saves the passed in EmployeeTipRated rates for the current Employer
-        employer.setTipRates(editedEmployeeTipRates);
+        employer.setTipRates(editedRoleType);
         employerRepository.save(employer);
 
 //        Changes the tip rates for current employees to the new rate
         for(Employee employee: employer.getEmployees()){
-            employee.setPercentOfTipout(editedEmployeeTipRates.getTipoutByRole(employee));
+            employee.setPercentOfTipout(editedRoleType.getTipoutByRole(employee));
             employeeRepository.save(employee);
         }
-        System.out.println(editedEmployeeTipRates.getBartenderRate());
+        System.out.println(editedRoleType.getBartenderRate());
         return HttpStatus.OK;
     }
 }

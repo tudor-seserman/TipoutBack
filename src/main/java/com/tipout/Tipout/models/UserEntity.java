@@ -1,5 +1,6 @@
 package com.tipout.Tipout.models;
 
+import com.google.gson.annotations.Expose;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -10,16 +11,17 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "users")
 @Data
 @NoArgsConstructor
-public class UserEntity extends AbstractEntity{
-
-
-
+public class UserEntity{
+    @Id
+    @GeneratedValue
+    @Expose
+    private UUID id;
     @NotNull
     private String username;
     @NotNull
