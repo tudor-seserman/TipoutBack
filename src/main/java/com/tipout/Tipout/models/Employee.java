@@ -23,7 +23,7 @@ different roles will inherit from this class.
 public class Employee implements Serializable {
 
     @Id
-    @GeneratedValue(generator="employee")
+    @GeneratedValue
     @Expose
     private UUID id;
     @NotNull
@@ -43,6 +43,7 @@ public class Employee implements Serializable {
 //    @Expose
 //    private String roleDetail = this.getClass().getSimpleName();
     @Expose
+    @OneToMany
     private List<EmployeeRole> employeeRole = new ArrayList<>();
 
     //Field is used to filter out archived employees from active Employees

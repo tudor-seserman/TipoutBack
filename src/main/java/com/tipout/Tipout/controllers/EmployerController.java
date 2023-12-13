@@ -11,53 +11,64 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value="employer")
 public class EmployerController {
 
-    BartenderRepository bartenderRepository;
-    BOHRepository bohRepository;
-    BusserRepository busserRepository;
-    ServerRepository serverRepository;
+
     AuthenticationController authenticationController;
     EmployeeRepository employeeRepository;
+
+    EmployeeRoleRepository employeeRoleRepository;
     EmployerRepository employerRepository;
     AuthenticatedUser authenticatedUser;
+
     @Autowired
-    public EmployerController(BartenderRepository bartenderRepository, BOHRepository bohRepository, BusserRepository busserRepository, ServerRepository serverRepository, AuthenticationController authenticationController, EmployeeRepository employeeRepository, EmployerRepository employerRepository, AuthenticatedUser authenticatedUser) {
-        this.bartenderRepository = bartenderRepository;
-        this.bohRepository = bohRepository;
-        this.busserRepository = busserRepository;
-        this.serverRepository = serverRepository;
+    public EmployerController(AuthenticationController authenticationController, EmployeeRepository employeeRepository, EmployeeRoleRepository employeeRoleRepository, EmployerRepository employerRepository, AuthenticatedUser authenticatedUser) {
         this.authenticationController = authenticationController;
         this.employeeRepository = employeeRepository;
+        this.employeeRoleRepository = employeeRoleRepository;
         this.employerRepository = employerRepository;
         this.authenticatedUser = authenticatedUser;
     }
 
-    @GetMapping("rates")
+
+    @GetMapping("roles")
+    public Iterable<String> getAllEmployeesRoles() {
+        Employer employer = (Employer) authenticatedUser.getUser();
+        Iterable<String> employeeRoleNames;
+        employeeRoleNames = employer.getEmployeesRoleTypes().stream().map(EmployeeRole::getName).collect(Collectors.toList());
+        return employeeRoleNames;
+    }
+
+
+        @GetMapping("rates")
     public ResponseEntity<List<TipRatesDTO>> getEmployerTipRates(){
         Employer employer = (Employer)authenticatedUser.getUser();
-        return ResponseEntity.ok(employer.getTipRates().getAllEmployerTipRates());
+            List<TipRatesDTO> employeeRoleRates;
+            employeeRoleRates = employer.getEmployeesRoleTypes().stream().map(employeeRole->new TipRatesDTO(employeeRole.getName(), employeeRole.getRate())).collect(Collectors.toList());
+        return ResponseEntity.ok(employeeRoleRates);
     }
 
     @PostMapping("editRates")
     public HttpStatus editEmployerTipRates(@RequestBody List<TipRatesDTO> ratesToEdit){
         Employer employer = (Employer)authenticatedUser.getUser();
-        EmployeeRole editedRoleType = employer.getTipRates().editTipRates(ratesToEdit);
-
-        //         Saves the passed in EmployeeTipRated rates for the current Employer
-        employer.setTipRates(editedRoleType);
-        employerRepository.save(employer);
-
-//        Changes the tip rates for current employees to the new rate
-        for(Employee employee: employer.getEmployees()){
-            employee.setPercentOfTipout(editedRoleType.getTipoutByRole(employee));
-            employeeRepository.save(employee);
+        List<EmployeeRole> employeeRoleTipRatesToEdit = new ArrayList<>();
+        for (TipRatesDTO tipRateToEdit : ratesToEdit){
+            Optional<EmployeeRole> employeeRoleOptional = employeeRoleRepository.findByName(tipRateToEdit.roleName());
+            EmployeeRole employeeRole = employeeRoleOptional.get();
+            employeeRole.setRate(tipRateToEdit.tipRate());
+            employeeRoleTipRatesToEdit.add(employeeRole);
         }
-        System.out.println(editedRoleType.getBartenderRate());
+        employeeRoleRepository.saveAll(employeeRoleTipRatesToEdit);
+
+
         return HttpStatus.OK;
     }
 }

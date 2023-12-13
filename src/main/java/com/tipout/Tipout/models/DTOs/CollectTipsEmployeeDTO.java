@@ -7,10 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 public class CollectTipsEmployeeDTO {
-    long id;
+    UUID id;
     String name;
     Tips tips;
 

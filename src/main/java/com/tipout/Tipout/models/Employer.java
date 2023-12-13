@@ -3,6 +3,7 @@ package com.tipout.Tipout.models;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ One of two user classes. Employers handle Employee enrollment and setting Tipout
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper=false)
 @JsonIdentityInfo(generator= ObjectIdGenerators.UUIDGenerator.class, property="@id")
 public class Employer extends UserEntity implements Serializable {
 
@@ -30,13 +32,6 @@ public class Employer extends UserEntity implements Serializable {
     @OneToMany(mappedBy = "employer", cascade=CascadeType.ALL)
     private List<EmployeeRole> employeesRoleTypes=new ArrayList<>();
 
-    //Eventually Employers will ba able to choose the employee types they want to have in their system
-//    @ElementCollection(targetClass = String.class)
-//    private List<String> employeesTypes = new ArrayList<>(Arrays.asList(Bartender.getRoleType(), BOH.getRoleType(), Busser.getRoleType(), Server.getRoleType()));
-//
-//    //Tip rates for Employes for tippool schema
-//    @OneToOne(cascade=CascadeType.ALL)
-//    private EmployeeRole tipRates = new EmployeeRole();
 
     public Employer(String username, String password) {
         super(username, password);
