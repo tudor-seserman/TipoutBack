@@ -44,6 +44,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
     @Query(value="SELECT *, 0 AS clazz_ FROM tipout.EMPLOYEE Where deleted = true AND employer_id = ?1", nativeQuery = true)
     List<Employee> findArhievedEmployees(UUID id);
 
-    List<Employee> findAllByDeletedFalseAndEmployer_Id(long Employer_Id);
+    List<Employee> findAllByDeletedFalseAndEmployer_Id(UUID Employer_Id);
 
 }
