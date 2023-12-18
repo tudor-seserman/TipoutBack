@@ -15,4 +15,6 @@ public interface ReportEntry<T> {
     BigDecimal sales = null;
 
     void createEntry(T collectEmployeeInfo);
+    Tips getTipsOwed();
+    String getName();
 }

@@ -1,12 +1,9 @@
 package com.tipout.Tipout.models.TipoutSchemas.WeightedByRole;
 
 import com.google.gson.annotations.Expose;
-import com.tipout.Tipout.models.Employee;
 import com.tipout.Tipout.models.EmployeeRole;
 import com.tipout.Tipout.models.TipoutSchemas.WeightedByRole.DTOs.CollectTipsEmployeeDTO;
 import com.tipout.Tipout.models.Tips;
-import com.tipout.Tipout.models.interfaces.CollectEmployeeInfo;
-import com.tipout.Tipout.models.interfaces.Report;
 import com.tipout.Tipout.models.interfaces.ReportEntry;
 import lombok.Data;
 import lombok.NoArgsConstructor;

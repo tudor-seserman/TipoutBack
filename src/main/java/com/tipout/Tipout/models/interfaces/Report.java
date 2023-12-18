@@ -10,5 +10,11 @@ public interface Report <T extends ReportEntry,K extends CollectEmployeeInfoMap>
     BigDecimal totalTipsCollected = null;
     BigDecimal totalSalesCollected = null;
 
-    void intializeReport(K collectEmployeeInfoMap);
+    void initializeReport(K collectEmployeeInfoMap);
+
+    BigDecimal getTotalTipsCollected();
+
+    List<T> getMoneyHandlersEntries();
+
+    List<T> getNonMoneyHandlersEntries();
 }

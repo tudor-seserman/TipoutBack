@@ -36,7 +36,7 @@ public class ReportWeightedByRole implements Report<ReportWeightedByRoleEntry, C
     BigDecimal totalSalesCollected = null;
 
     @Override
-    public void intializeReport(CollectTipsWeightedByRoleMapDTO collectTipsWeightedByRoleMapDTO) {
+    public void initializeReport(CollectTipsWeightedByRoleMapDTO collectTipsWeightedByRoleMapDTO) {
         for(CollectTipsEmployeeDTO collectTipsEmployeeDTO : collectTipsWeightedByRoleMapDTO.getMoneyHandlers()){
             ReportWeightedByRoleEntry entry = new ReportWeightedByRoleEntry();
             entry.createEntry(collectTipsEmployeeDTO);

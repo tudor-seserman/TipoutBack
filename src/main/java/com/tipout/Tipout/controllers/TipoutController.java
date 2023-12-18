@@ -1,14 +1,15 @@
 package com.tipout.Tipout.controllers;
 
 import com.tipout.Tipout.models.*;
+import com.tipout.Tipout.models.DTOs.TipoutReportTipsDTO;
 import com.tipout.Tipout.models.TipoutSchemas.WeightedByRole.DTOs.CollectTipsWeightedByRoleMapDTO;
 import com.tipout.Tipout.models.TipoutSchemas.WeightedByRole.Data.ReportWeightedByRoleEntryRepository;
 import com.tipout.Tipout.models.TipoutSchemas.WeightedByRole.ReportWeightedByRole;
-import com.tipout.Tipout.models.TipoutSchemas.WeightedByRole.ReportWeightedByRoleEntry;
 import com.tipout.Tipout.models.TipoutSchemas.WeightedByRole.TipoutWeightedByRole;
 import com.tipout.Tipout.models.TipoutSchemas.WeightedByRole.Data.ReportWeightedByRoleRepository;
 import com.tipout.Tipout.models.interfaces.Report;
-import com.tipout.Tipout.service.CollectTipsMapGenerator;
+import com.tipout.Tipout.service.GenerateCollectEmployeeInfoMap;
+import com.tipout.Tipout.service.GenerateTipoutReportTipsDTO;
 import org.springframework.http.ResponseEntity;
 import com.tipout.Tipout.models.data.*;
 import com.tipout.Tipout.service.AuthenticatedUser;
@@ -66,51 +67,21 @@ public class TipoutController {
         Employer employer = (Employer)authenticatedUser.getUser();
         List<Employee> employees = employeeRepository.findAllByDeletedFalseAndEmployer_Id(employer.getId());
 
-        CollectTipsWeightedByRoleMapDTO collectTipsWeightedByRoleMapDTO = CollectTipsMapGenerator.generateCollectTipsEmployeeMapDTO(employees);
+        CollectTipsWeightedByRoleMapDTO collectTipsWeightedByRoleMapDTO = GenerateCollectEmployeeInfoMap.generateCollectTipsEmployeeMapDTO(employees);
 
         return ResponseEntity.ok(collectTipsWeightedByRoleMapDTO);
     }
 
     @PostMapping("WeightedTippoolByRole")
-    public ResponseEntity<Report> WeightedTippoolByRoleReport(@RequestBody CollectTipsWeightedByRoleMapDTO collectTipsWeightedByRoleMapDTO){
+    public ResponseEntity<TipoutReportTipsDTO> WeightedTippoolByRoleReport(@RequestBody CollectTipsWeightedByRoleMapDTO collectTipsWeightedByRoleMapDTO){
         TipoutWeightedByRole tipoutWeightedByRole = new TipoutWeightedByRole();
-
-        CollectTipsWeightedByRoleMapDTO cleanedMap = tipoutWeightedByRole.clean(collectTipsWeightedByRoleMapDTO);
-        ReportWeightedByRole report = tipoutWeightedByRole.calculate(cleanedMap);
+        ReportWeightedByRole report = tipoutWeightedByRole.generateReport(collectTipsWeightedByRoleMapDTO);
 
         reportWeightedByRoleRepository.save(report);
+        TipoutReportTipsDTO simpleReport = GenerateTipoutReportTipsDTO.generate(report);
 
 
-//        Map<Employee,Tips> employeesMap=new HashMap<>();
-//
-//        for(CollectTipsEmployeeDTO collectTipsEmployeeDTO: collectTipsEmployees){
-//            if(collectTipsEmployeeDTO.getTips() != null){
-//            Optional<Employee> optionalEmployee = employeeRepository.findById(collectTipsEmployeeDTO.getId());
-//            if (optionalEmployee.isEmpty()){throw new RuntimeException();}
-//            Employee employee =  optionalEmployee.get();
-//            employeesMap.put(employee, collectTipsEmployeeDTO.getTips());}
-//        }
-////
-//        TipsCollected tipsCollected =new TipsCollected(employeesMap);
-//        tipsCollectedRepository.save(tipsCollected);
-//
-////        In order to calculate the distribution for the current schema, we need to use the
-////        Tipout object which handles the calculation for the current schema we need to pass in three pieces of information:
-//        long id = tipsCollected.getId();
-//////        1) The total amount in the tippool
-//        BigDecimal totalTippool = tipsCollectedRepository.findTotalTippool(id);
-//////        2) The different types of employees in the tip pool
-//        Integer totalEmployeeTipRates = tipsCollectedRepository.findTotalEmployeeTipoutPercentInTippool(id);
-//////        3) The Employees in the tip pool
-//        List<Employee> employeesInTipPool = new ArrayList<>(employeesMap.keySet());
-////
-////
-//        Tipout tipout = new Tipout();
-//////        We call the calculateTippoolDistribution from the Tipout class which will return a list of Employees with money they are owed
-//        Map<String, String> employeeShareofTipoolMap = tipout.calculateWeightedTippoolByRole(totalEmployeeTipRates, totalTippool, employeesInTipPool);
-//        tipoutRepository.save(tipout);
-
-        return ResponseEntity.ok(report);
+        return ResponseEntity.ok(simpleReport);
     }
 
 //    @PostMapping("EvenTippool")

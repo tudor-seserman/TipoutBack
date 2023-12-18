@@ -1,10 +1,8 @@
 package com.tipout.Tipout.models.TipoutSchemas.WeightedByRole;
 
-import com.tipout.Tipout.models.EmployeeRole;
 import com.tipout.Tipout.models.TipoutSchemas.WeightedByRole.DTOs.CollectTipsEmployeeDTO;
 import com.tipout.Tipout.models.TipoutSchemas.WeightedByRole.DTOs.CollectTipsWeightedByRoleMapDTO;
 import com.tipout.Tipout.models.Tips;
-import com.tipout.Tipout.models.interfaces.CollectEmployeeInfo;
 import com.tipout.Tipout.models.interfaces.Tipout;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +10,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
@@ -23,44 +19,48 @@ public class TipoutWeightedByRole implements Tipout<CollectTipsWeightedByRoleMap
 
 
     @Override
+    public ReportWeightedByRole generateReport(CollectTipsWeightedByRoleMapDTO collectEmployeeInfoMap) {
+        CollectTipsWeightedByRoleMapDTO cleanedMap = this.clean(collectEmployeeInfoMap);
+        ReportWeightedByRole report = this.calculate(cleanedMap);
+
+        return report;
+    }
+
+    @Override
     public ReportWeightedByRole calculate(CollectTipsWeightedByRoleMapDTO CollectEmployeeInfoMap) {
         ReportWeightedByRole reportWeightedByRole = new ReportWeightedByRole();
-        reportWeightedByRole.intializeReport(CollectEmployeeInfoMap);
+        reportWeightedByRole.initializeReport(CollectEmployeeInfoMap);
 
         BigDecimal totalTipsInTippool= this.calculateTotalTips(CollectEmployeeInfoMap.getMoneyHandlers());
         reportWeightedByRole.setTotalTipsCollected(totalTipsInTippool);
 
-        BigInteger totalTippoolRates = this.calculateTotalUniqueTipoutRates(CollectEmployeeInfoMap);
+        BigInteger totalTippoolRates = this.calculateTotalTipoutRates(CollectEmployeeInfoMap);
 
-        BigDecimal shareOfTippool = totalTipsInTippool.divide(new BigDecimal(totalTippoolRates), 4, RoundingMode.HALF_UP);
+        BigDecimal shareOfTippoolForEachRole = totalTipsInTippool.divide(new BigDecimal(totalTippoolRates), 4, RoundingMode.HALF_UP);
 
         for (ReportWeightedByRoleEntry nonMoneyHandler: reportWeightedByRole.getNonMoneyHandlersEntries()){
-            nonMoneyHandler.setTipsOwed(new Tips(shareOfTippool.multiply(new BigDecimal(nonMoneyHandler.getRole().getRate()))));
+            nonMoneyHandler.setTipsOwed(new Tips(shareOfTippoolForEachRole.multiply(new BigDecimal(nonMoneyHandler.getRole().getRate()))));
         }
         for (ReportWeightedByRoleEntry moneyHandler: reportWeightedByRole.getMoneyHandlersEntries()){
-            moneyHandler.setTipsOwed(new Tips(shareOfTippool.multiply(new BigDecimal(moneyHandler.getRole().getRate()))));
+            moneyHandler.setTipsOwed(new Tips(shareOfTippoolForEachRole.multiply(new BigDecimal(moneyHandler.getRole().getRate()))));
         }
 
-        System.out.println(reportWeightedByRole);
         return reportWeightedByRole;
     }
 
-    BigInteger calculateTotalUniqueTipoutRates(CollectTipsWeightedByRoleMapDTO collectTipsWeightedByRoleMapDTO){
-        BigInteger totalUniqueRates = BigInteger.valueOf(0);
-        Set<EmployeeRole> roles= new HashSet<>();
+    BigInteger calculateTotalTipoutRates(CollectTipsWeightedByRoleMapDTO collectTipsWeightedByRoleMapDTO){
+        BigInteger totalRates = BigInteger.valueOf(0);
 
         for(CollectTipsEmployeeDTO employeeDTO:collectTipsWeightedByRoleMapDTO.getMoneyHandlers()){
-            roles.add(employeeDTO.getRole());
+            totalRates = totalRates.add(employeeDTO.getRole().getRate());
         }
         for(CollectTipsEmployeeDTO employeeDTO:collectTipsWeightedByRoleMapDTO.getNonMoneyHandlers()){
-            roles.add(employeeDTO.getRole());
+            totalRates = totalRates.add(employeeDTO.getRole().getRate());
         }
 
-        for(EmployeeRole role: roles){
-            totalUniqueRates = totalUniqueRates.add(role.getRate());
-        }
 
-        return totalUniqueRates;
+
+        return totalRates;
     }
 
     @Override

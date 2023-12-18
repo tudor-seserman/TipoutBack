@@ -12,7 +12,7 @@ import java.util.List;
 
 
 @Service
-public class CollectTipsMapGenerator {
+public class GenerateCollectEmployeeInfoMap {
 
     public static CollectTipsWeightedByRoleMapDTO generateCollectTipsEmployeeMapDTO(List<Employee> employeesGet) {
 
