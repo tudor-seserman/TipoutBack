@@ -3,6 +3,7 @@ package com.tipout.Tipout.models;
 import com.google.gson.annotations.Expose;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -18,8 +19,8 @@ as the Employees that will receive money from the tip pool.
 public class TipsCollected{
 
     @Id
-    @GeneratedValue
-    @Expose
+    @GeneratedValue(generator = "uuid-hibernate-generator")
+    @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
     @OneToMany(cascade = CascadeType.PERSIST)

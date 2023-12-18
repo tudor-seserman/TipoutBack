@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -19,8 +20,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UserEntity{
     @Id
-    @GeneratedValue
-    @Expose
+    @GeneratedValue(generator = "uuid-hibernate-generator")
+    @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
     @NotNull
     private String username;

@@ -3,6 +3,7 @@ package com.tipout.Tipout.models;
 import com.google.gson.annotations.Expose;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +21,8 @@ Class for handling collected tips
 @NoArgsConstructor
 public class Tips{
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "uuid-hibernate-generator")
+    @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
     @Expose
     private UUID id;
     private BigDecimal tips=null;

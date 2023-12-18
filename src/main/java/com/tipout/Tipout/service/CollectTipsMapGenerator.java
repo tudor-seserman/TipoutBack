@@ -1,9 +1,10 @@
 package com.tipout.Tipout.service;
 
-import com.tipout.Tipout.models.DTOs.CollectTipsEmployeeDTO;
-import com.tipout.Tipout.models.DTOs.CollectTipsEmployeeMapDTO;
+import com.tipout.Tipout.models.TipoutSchemas.WeightedByRole.DTOs.CollectTipsEmployeeDTO;
+import com.tipout.Tipout.models.TipoutSchemas.WeightedByRole.DTOs.CollectTipsWeightedByRoleMapDTO;
 import com.tipout.Tipout.models.Employee;
 import com.tipout.Tipout.models.EmployeeRole;
+
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,9 +14,9 @@ import java.util.List;
 @Service
 public class CollectTipsMapGenerator {
 
-    public static CollectTipsEmployeeMapDTO generateCollectTipsEmployeeMapDTO(List<Employee> employeesGet) {
+    public static CollectTipsWeightedByRoleMapDTO generateCollectTipsEmployeeMapDTO(List<Employee> employeesGet) {
 
-        CollectTipsEmployeeMapDTO collectTipsEmployeeMapDTO = new CollectTipsEmployeeMapDTO();
+        CollectTipsWeightedByRoleMapDTO collectTipsWeightedByRoleMapDTO = new CollectTipsWeightedByRoleMapDTO();
 
         List<CollectTipsEmployeeDTO> moneyHandlerEmployeesLoad = new ArrayList<>();
         List<CollectTipsEmployeeDTO> nonMoneyHandlerEmployeesLoad = new ArrayList<>();
@@ -31,9 +32,9 @@ public class CollectTipsMapGenerator {
                 }
             }
 
-        collectTipsEmployeeMapDTO.setMoneyHandlers(moneyHandlerEmployeesLoad);
-        collectTipsEmployeeMapDTO.setNonMoneyHandlers(nonMoneyHandlerEmployeesLoad);
+        collectTipsWeightedByRoleMapDTO.setMoneyHandlers(moneyHandlerEmployeesLoad);
+        collectTipsWeightedByRoleMapDTO.setNonMoneyHandlers(nonMoneyHandlerEmployeesLoad);
 
-        return collectTipsEmployeeMapDTO;
+        return collectTipsWeightedByRoleMapDTO;
     }
 }

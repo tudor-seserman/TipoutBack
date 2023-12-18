@@ -1,28 +1,29 @@
-package com.tipout.Tipout.models.DTOs;
+package com.tipout.Tipout.models.TipoutSchemas.WeightedByRole.DTOs;
 
 import com.tipout.Tipout.models.Employee;
 import com.tipout.Tipout.models.EmployeeRole;
 import com.tipout.Tipout.models.Tips;
+import com.tipout.Tipout.models.interfaces.CollectEmployeeInfo;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-public class CollectTipsEmployeeDTO {
+public class CollectTipsEmployeeDTO implements CollectEmployeeInfo{
     UUID id;
-    UUID roleID;
+    EmployeeRole role;
     String roleName;
     String name;
-    Tips tips;
+    BigDecimal tips;
 
     public CollectTipsEmployeeDTO(Employee employee, EmployeeRole role) {
         this.id = employee.getId();
-        this.name = employee.toString();
-        this.roleID=role.getId();
+        this.name = employee.getFullName();
+        this.role=role;
         this.roleName=role.getName();
     }
 }

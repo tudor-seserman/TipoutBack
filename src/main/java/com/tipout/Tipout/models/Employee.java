@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.google.gson.annotations.Expose;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -25,7 +26,8 @@ different roles will inherit from this class.
 public class Employee implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "uuid-hibernate-generator")
+    @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
     @Expose
     private UUID id;
     @NotNull
@@ -42,7 +44,7 @@ public class Employee implements Serializable {
     private Employer employer;
 
     @Expose
-    @OneToMany
+    @ManyToMany
     private List<EmployeeRole> employeeRoles = new ArrayList<>();
 
     //Field is used to filter out archived employees from active Employees
@@ -66,8 +68,8 @@ public class Employee implements Serializable {
             employeeRoles.add(employeeRole);}
     }
 
-    @Override
-    public String toString() {
-        return firstName + ' ' +lastName;
+
+    public String getFullName() {
+        return this.firstName + ' ' +this.lastName;
     }
 }

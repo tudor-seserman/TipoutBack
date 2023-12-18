@@ -4,12 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.google.gson.annotations.Expose;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigInteger;
 import java.util.UUID;
@@ -22,11 +21,13 @@ The tip distribution template access fields using this naming convention
 @Entity
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @JsonIdentityInfo(generator= ObjectIdGenerators.UUIDGenerator.class, property="@id")
 public class EmployeeRole{
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "uuid-hibernate-generator")
+    @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
     @Expose
     private UUID id;
     @ManyToOne
