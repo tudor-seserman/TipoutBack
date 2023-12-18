@@ -2,6 +2,11 @@ package com.tipout.Tipout.controllers;
 
 import com.tipout.Tipout.models.*;
 import com.tipout.Tipout.models.DTOs.TipoutReportTipsDTO;
+import com.tipout.Tipout.models.TipoutSchemas.EvenTippool.DTOs.CollectTipsEvenTippoolMapDTO;
+import com.tipout.Tipout.models.TipoutSchemas.EvenTippool.Data.ReportEvenTippoolRepository;
+import com.tipout.Tipout.models.TipoutSchemas.EvenTippool.ReportEvenTippool;
+import com.tipout.Tipout.models.TipoutSchemas.EvenTippool.ReportEvenTippoolEntry;
+import com.tipout.Tipout.models.TipoutSchemas.EvenTippool.TipoutEvenTippool;
 import com.tipout.Tipout.models.TipoutSchemas.WeightedByRole.DTOs.CollectTipsWeightedByRoleMapDTO;
 import com.tipout.Tipout.models.TipoutSchemas.WeightedByRole.Data.ReportWeightedByRoleEntryRepository;
 import com.tipout.Tipout.models.TipoutSchemas.WeightedByRole.ReportWeightedByRole;
@@ -29,23 +34,23 @@ public class TipoutController {
     AuthenticationController authenticationController;
     EmployeeRepository employeeRepository;
     EmployeeRoleRepository employeeRoleRepository;
-    TipsCollectedRepository tipsCollectedRepository;
     AuthenticatedUser authenticatedUser;
-    TipoutRepository tipoutRepository;
     ReportWeightedByRoleRepository reportWeightedByRoleRepository;
     ReportWeightedByRoleEntryRepository reportWeightedByRoleEntryRepository;
+    ReportEvenTippoolRepository reportEvenTippoolRepository;
 
     @Autowired
-    public TipoutController(AuthenticationController authenticationController, EmployeeRepository employeeRepository, EmployeeRoleRepository employeeRoleRepository, TipsCollectedRepository tipsCollectedRepository, AuthenticatedUser authenticatedUser, TipoutRepository tipoutRepository, ReportWeightedByRoleRepository reportWeightedByRoleRepository, ReportWeightedByRoleEntryRepository reportWeightedByRoleEntryRepository) {
+    public TipoutController(AuthenticationController authenticationController, EmployeeRepository employeeRepository, EmployeeRoleRepository employeeRoleRepository, AuthenticatedUser authenticatedUser, ReportWeightedByRoleRepository reportWeightedByRoleRepository, ReportWeightedByRoleEntryRepository reportWeightedByRoleEntryRepository, ReportEvenTippoolRepository reportEvenTippoolRepository) {
         this.authenticationController = authenticationController;
         this.employeeRepository = employeeRepository;
         this.employeeRoleRepository = employeeRoleRepository;
-        this.tipsCollectedRepository = tipsCollectedRepository;
         this.authenticatedUser = authenticatedUser;
-        this.tipoutRepository = tipoutRepository;
         this.reportWeightedByRoleRepository = reportWeightedByRoleRepository;
         this.reportWeightedByRoleEntryRepository = reportWeightedByRoleEntryRepository;
+        this.reportEvenTippoolRepository = reportEvenTippoolRepository;
     }
+
+
 
 
 
@@ -84,37 +89,17 @@ public class TipoutController {
         return ResponseEntity.ok(simpleReport);
     }
 
-//    @PostMapping("EvenTippool")
-//    public ResponseEntity<Map<String, String>> EvenTippoolReport(@RequestBody List<CollectTipsEmployeeDTO> collectTipsEmployees){
-//        Map<Employee,Tips> employeesMap=new HashMap<>();
-//
-//        for(CollectTipsEmployeeDTO collectTipsEmployeeDTO: collectTipsEmployees){
-//            if(collectTipsEmployeeDTO.getTips() != null){
-//                Optional<Employee> optionalEmployee = employeeRepository.findById(collectTipsEmployeeDTO.getId());
-//                if (optionalEmployee.isEmpty()){throw new RuntimeException();}
-//                Employee employee =  optionalEmployee.get();
-//                employeesMap.put(employee, collectTipsEmployeeDTO.getTips());}
-//        }
-////
-//        TipsCollected tipsCollected =new TipsCollected(employeesMap);
-//        tipsCollectedRepository.save(tipsCollected);
-////
-//////        In order to calculate the distribution for the current schema, we need to use the
-//////        Tipout object which handles the calculation for the current schema we need to pass in three pieces of information:
-//        long id = tipsCollected.getId();
-//////        1) The total amount in the tippool
-//        BigDecimal totalTippool = tipsCollectedRepository.findTotalTippool(id);
-//////        2) The Employees in the tip pool
-//        List<Employee> employeesInTipPool = new ArrayList<>(employeesMap.keySet());
-////
-////
-//        Tipout tipout = new Tipout();
-//////        We call the calculateTippoolDistribution from the Tipout class which will return a list of Employees with money they are owed
-//        Map<String, String> employeeShareofTipoolMap = tipout.calculateEvenTippool(totalTippool, employeesInTipPool);
-//        tipoutRepository.save(tipout);
-//
-//        return ResponseEntity.ok(employeeShareofTipoolMap);
-//    }
+    @PostMapping("EvenTippool")
+    public ResponseEntity<TipoutReportTipsDTO> EvenTippoolReport(@RequestBody CollectTipsEvenTippoolMapDTO collectTipsEvenTippoolMapDTO) {
+        TipoutEvenTippool tipoutEvenTippool = new TipoutEvenTippool();
+        ReportEvenTippool report = tipoutEvenTippool.generateReport(collectTipsEvenTippoolMapDTO);
+
+        reportEvenTippoolRepository.save(report);
+        TipoutReportTipsDTO simpleReport = GenerateTipoutReportTipsDTO.generate(report);
+
+
+        return ResponseEntity.ok(simpleReport);
+    }
 
 
 

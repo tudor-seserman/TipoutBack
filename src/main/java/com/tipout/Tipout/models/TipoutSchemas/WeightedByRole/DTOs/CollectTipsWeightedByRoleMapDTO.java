@@ -14,22 +14,22 @@ public class CollectTipsWeightedByRoleMapDTO implements CollectEmployeeInfoMap<C
     List<CollectTipsEmployeeDTO> nonMoneyHandlers = new ArrayList<>();
 
 //    @Override
-//    public void setNonMoneyHandlers(List<CollectTipsEmployeeDTO> nonMoneyHandlers) {
+//    public void setNonMoneyHandlers(List<CollectEvenTippoolTipsEmployeeDTO> nonMoneyHandlers) {
 //        this.nonMoneyHandlers=nonMoneyHandlers;
 //    }
 //
 //    @Override
-//    public void setMoneyHandlers(List<CollectTipsEmployeeDTO> moneyHandlers) {
+//    public void setMoneyHandlers(List<CollectEvenTippoolTipsEmployeeDTO> moneyHandlers) {
 //        this.moneyHandlers=moneyHandlers;
 //    }
 //
 //    @Override
-//    public List<CollectTipsEmployeeDTO> getMoneyHandlers() {
+//    public List<CollectEvenTippoolTipsEmployeeDTO> getMoneyHandlers() {
 //        return moneyHandlers;
 //    }
 //
 //    @Override
-//    public List<CollectTipsEmployeeDTO> getNonMoneyHandlers() {
+//    public List<CollectEvenTippoolTipsEmployeeDTO> getNonMoneyHandlers() {
 //        return nonMoneyHandlers;
 //    }
 }
