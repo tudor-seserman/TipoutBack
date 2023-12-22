@@ -1,4 +1,6 @@
 package com.tipout.Tipout.models.DTOs;
 
-public record DeleteEmployeeDTO(Long employeeToDelete) {
+import java.util.UUID;
+
+public record DeleteEmployeeDTO(UUID employeeToDelete) {
 }

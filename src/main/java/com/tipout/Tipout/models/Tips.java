@@ -1,6 +1,12 @@
 package com.tipout.Tipout.models;
 
+import com.google.gson.annotations.Expose;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -10,26 +16,21 @@ import java.util.Locale;
 Class for handling collected tips
  */
 @Entity
-public class Tips extends AbstractEntity{
+@Data
+@NoArgsConstructor
+public class Tips{
+    @Id
+    @GeneratedValue(generator = "identity")
+    @Expose
+    private long id;
     private BigDecimal tips=null;
     private String displayTips;
-
-    public Tips() {
-    }
 
     public Tips(BigDecimal tips) {
         this.tips = tips;
     }
     public Tips(Double numberTips){this.tips = new BigDecimal(numberTips);}
     public Tips(Integer numberTips){this.tips = new BigDecimal(numberTips);}
-
-    public BigDecimal getTips() {
-        return tips;
-    }
-
-    public void setTips(BigDecimal tips) {
-        this.tips = tips;
-    }
 
 
 //Formats Tips to dollar amount rounded to two decimal places

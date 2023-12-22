@@ -1,5 +1,9 @@
 package com.tipout.Tipout.models.DTOs;
 
-public record EditEmployeeDTO(Long idEdit,String firstName, String lastName, String employeeRole) {
+import com.tipout.Tipout.models.EmployeeRole;
+
+import java.util.UUID;
+
+public record EditEmployeeDTO(UUID idEdit, String firstName, String lastName, EmployeeRole[] employeeRole) {
 
 }
