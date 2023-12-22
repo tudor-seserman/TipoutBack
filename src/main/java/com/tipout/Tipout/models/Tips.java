@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Locale;
-import java.util.UUID;
 
 /*
 Class for handling collected tips
@@ -21,10 +20,9 @@ Class for handling collected tips
 @NoArgsConstructor
 public class Tips{
     @Id
-    @GeneratedValue(generator = "uuid-hibernate-generator")
-    @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(generator = "identity")
     @Expose
-    private UUID id;
+    private long id;
     private BigDecimal tips=null;
     private String displayTips;
 

@@ -49,24 +49,7 @@ public class TipoutController {
         this.reportWeightedByRoleEntryRepository = reportWeightedByRoleEntryRepository;
         this.reportEvenTippoolRepository = reportEvenTippoolRepository;
     }
-
-
-
-
-
-
-    /*
-    This method is in charge of dealing with a simple tip pool. It provides two lists to the view:
-    MoneyHandlers - Employees that collect tips tied to a particular Employer
-    NonMoneyHandlers - Employees that do not collect tips tied to a particular Employer
-
-    If value is set for a MoneyHandler they are included in the tippool, if no value is set they are not.
-    For nonMoneyHandlers if they are selected to be in the tippol they will be included in the distribution.
-
-    Data is collected by a TipsCollected objected and tabulated by a Tipout object
-     */
-
-
+    
     @GetMapping("EmployeeTipMap")
     public ResponseEntity<CollectTipsWeightedByRoleMapDTO> employeeTipMapController(){
         Employer employer = (Employer)authenticatedUser.getUser();
@@ -85,7 +68,6 @@ public class TipoutController {
         reportWeightedByRoleRepository.save(report);
         TipoutReportTipsDTO simpleReport = GenerateTipoutReportTipsDTO.generate(report);
 
-
         return ResponseEntity.ok(simpleReport);
     }
 
@@ -97,12 +79,7 @@ public class TipoutController {
         reportEvenTippoolRepository.save(report);
         TipoutReportTipsDTO simpleReport = GenerateTipoutReportTipsDTO.generate(report);
 
-
         return ResponseEntity.ok(simpleReport);
     }
-
-
-
-
 
 }

@@ -71,7 +71,6 @@ public class EmployeeController {
     @GetMapping("current")
     public ResponseEntity<List<String>> allEmployee(){
         Employer employer = (Employer)authenticatedUser.getUser();
-//        List<Employee> employees = employeeRepository.findCurrentEmployees(employer.getId());
         Optional<List<Employee>> optionalEmployees = employeeRepository.findByEmployerAndDeletedFalse(employer);
         if (optionalEmployees.isEmpty()) {
 //            Placeholder until I can implement @ControllerAdvice
@@ -85,7 +84,6 @@ public class EmployeeController {
 
     @PostMapping("edit")
     public ResponseEntity editEmployee(@RequestBody EditEmployeeDTO employee){
-        System.out.println(employee);
 
         Optional<Employee> optEmployeeToEdit = employeeRepository.findById(employee.idEdit());
         if(optEmployeeToEdit.isEmpty()){return new ResponseEntity<>(HttpStatus.NOT_FOUND);}
