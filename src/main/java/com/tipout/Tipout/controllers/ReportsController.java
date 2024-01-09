@@ -41,12 +41,12 @@ public class ReportsController {
     }
 
     @GetMapping("all")
-    public HttpStatus getAllReports(){
+    public ResponseEntity<List<Report>> getAllReports(){
         Employer employer = (Employer)authenticatedUser.getUser();
         Optional<List<Report>> optionalReports= reportLookUpRepository.findByEmployer(employer);
         List<Report> reports = optionalReports.get();
         System.out.println(reports);
 
-        return HttpStatus.OK;
+        return ResponseEntity.ok(reports);
     }
 }

@@ -37,7 +37,7 @@ public class TipoutController {
     ReportWeightedByRoleRepository reportWeightedByRoleRepository;
     ReportEvenTippoolRepository reportEvenTippoolRepository;
 
-
+    @Autowired
     public TipoutController(AuthenticationController authenticationController, EmployeeRepository employeeRepository, EmployeeRoleRepository employeeRoleRepository, AuthenticatedUser authenticatedUser, ReportLookUpRepository reportLookUpRepository, ReportWeightedByRoleRepository reportWeightedByRoleRepository, ReportEvenTippoolRepository reportEvenTippoolRepository) {
         this.authenticationController = authenticationController;
         this.employeeRepository = employeeRepository;
@@ -47,8 +47,6 @@ public class TipoutController {
         this.reportWeightedByRoleRepository = reportWeightedByRoleRepository;
         this.reportEvenTippoolRepository = reportEvenTippoolRepository;
     }
-
-    @Autowired
 
     
     @GetMapping("EmployeeTipMap")
