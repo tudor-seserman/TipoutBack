@@ -12,5 +12,5 @@ import java.util.UUID;
 
 @Repository
 public interface ReportLookUpRepository extends JpaRepository<ReportLookUp, UUID> {
-    Optional<List<Report>> findByEmployer(Employer employer);
+    Optional<List<ReportLookUp>> findByEmployer(Employer employer);
 }

@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -27,8 +28,22 @@ public class ReportLookUp {
     ReportEvenTippool reportEvenTippool;
     @OneToOne
     ReportWeightedByRole reportWeightedByRole;
+    LocalDateTime dateTime;
+    String shift;
 
     public ReportLookUp(Employer employer) {
         this.employer = employer;
+    }
+
+    public void setReportEvenTippool(ReportEvenTippool reportEvenTippool) {
+        this.shift = reportEvenTippool.getShift();
+        this.dateTime = reportEvenTippool.getDateTime();
+        this.reportEvenTippool = reportEvenTippool;
+    }
+
+    public void setReportWeightedByRole(ReportWeightedByRole reportWeightedByRole) {
+        this.shift = reportWeightedByRole.getShift();
+        this.dateTime = reportWeightedByRole.getDateTime();
+        this.reportWeightedByRole = reportWeightedByRole;
     }
 }

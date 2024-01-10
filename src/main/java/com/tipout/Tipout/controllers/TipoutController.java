@@ -64,6 +64,7 @@ public class TipoutController {
         Employer employer = (Employer)authenticatedUser.getUser();
         TipoutWeightedByRole tipoutWeightedByRole = new TipoutWeightedByRole();
         ReportWeightedByRole report = tipoutWeightedByRole.generateReport(collectTipsWeightedByRoleMapDTO);
+
         ReportLookUp reportLookUp= new ReportLookUp(employer);
         reportLookUp.setReportWeightedByRole(report);
 
