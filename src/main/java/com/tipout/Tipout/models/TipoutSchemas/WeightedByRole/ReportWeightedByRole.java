@@ -13,6 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -32,8 +33,10 @@ public class ReportWeightedByRole implements Report<ReportWeightedByRoleEntry, C
     @OneToMany(cascade = CascadeType.PERSIST)
     List<ReportWeightedByRoleEntry> nonMoneyHandlersEntries= new ArrayList<>();
 
-    BigDecimal totalTipsCollected = null;
-    BigDecimal totalSalesCollected = null;
+    BigDecimal totalTipsCollected ;
+    BigDecimal totalSalesCollected;
+    LocalDateTime dateTime;
+    String shift;
 
     @Override
     public void initializeReport(CollectTipsWeightedByRoleMapDTO collectTipsWeightedByRoleMapDTO) {
@@ -47,6 +50,7 @@ public class ReportWeightedByRole implements Report<ReportWeightedByRoleEntry, C
             entry.createEntry(collectTipsEmployeeDTO);
             this.nonMoneyHandlersEntries.add(entry);
         }
-
+        this.dateTime = collectTipsWeightedByRoleMapDTO.getDateTime();
+        this.shift = collectTipsWeightedByRoleMapDTO.getShift();
     }
 }

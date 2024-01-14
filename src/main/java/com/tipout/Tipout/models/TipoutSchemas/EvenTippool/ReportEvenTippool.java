@@ -12,6 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -31,8 +32,11 @@ public class ReportEvenTippool implements Report<ReportEvenTippoolEntry, Collect
     @OneToMany(cascade = CascadeType.PERSIST)
     List<ReportEvenTippoolEntry> nonMoneyHandlersEntries= new ArrayList<>();
 
-    BigDecimal totalTipsCollected = null;
-    BigDecimal totalSalesCollected = null;
+    BigDecimal totalTipsCollected;
+    BigDecimal totalSalesCollected;
+
+    LocalDateTime dateTime;
+    String shift;
 
 
     @Override
@@ -47,6 +51,9 @@ public class ReportEvenTippool implements Report<ReportEvenTippoolEntry, Collect
             entry.createEntry(collectEvenTipsEmployeeDTO);
             this.nonMoneyHandlersEntries.add(entry);
         }
+        this.dateTime=collectTipsEvenTippoolMapDTO.getDateTime();
+        this.shift=collectTipsEvenTippoolMapDTO.getShift();
+
     }
 }
 

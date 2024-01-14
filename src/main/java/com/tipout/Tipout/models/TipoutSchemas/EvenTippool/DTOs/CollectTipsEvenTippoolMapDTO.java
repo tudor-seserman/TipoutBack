@@ -4,6 +4,7 @@ import com.tipout.Tipout.models.interfaces.CollectEmployeeInfoMap;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,4 +13,6 @@ import java.util.List;
 public class CollectTipsEvenTippoolMapDTO implements CollectEmployeeInfoMap<CollectEvenTippoolTipsEmployeeDTO> {
     List<CollectEvenTippoolTipsEmployeeDTO> moneyHandlers = new ArrayList<>();
     List<CollectEvenTippoolTipsEmployeeDTO> nonMoneyHandlers = new ArrayList<>();
+    LocalDateTime dateTime;
+    String shift;
 }
